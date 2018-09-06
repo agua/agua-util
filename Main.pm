@@ -46,6 +46,29 @@ method setConf {
 
 =head2
 
+	SUBROUTINE		getUserhome
+	
+	PURPOSE
+	
+		RETURN THE FULL PATH TO THE USER'S HOME DIR
+
+=cut
+
+method getUserhome ( $username ) {
+	$self->logNote("username", $username);
+
+	#### OTHERWISE, GET USERNAME FROM JSON IF NOT PROVIDED
+	$username = $self->username() if not defined $username;
+	return if not defined $username;
+
+	my $userdir = $self->conf()->getKey("core:USERDIR");
+	my $userhome = "$userdir/$username";
+	
+	return $userhome;	
+}
+
+=head2
+
 	SUBROUTINE		getFileroot
 	
 	PURPOSE

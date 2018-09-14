@@ -59,6 +59,7 @@ has 'indent'	=> ( isa => 'Int', 		is => 'rw', default	=>	4 );
 # String
 has 'logtype'	=> ( isa => 'Str', 		is => 'rw', default	=> 	"cli"	);  
 has 'logfile'	=> ( isa => 'Str|Undef', is => 'rw', default => '' );
+has 'username' 	=> ( isa => 'Str|Undef', 		is => 'rw', required => 0 );
 
 # Object
 has 'logfh'     => ( isa => 'FileHandle|Undef', is => 'rw', required => 0 );
@@ -67,6 +68,80 @@ has 'olderr' 	=> ( isa => 'FileHandle', is => 'rw', required => 0 );
 
 #### EXTERNAL MODULES
 use Data::Dumper;
+# use PadWalker qw/peek_my peek_our/;
+
+# sub get_name_my {
+#     my $pad = peek_my($_[0] + 1);
+#     for (keys %$pad) {
+#         return $_ if $$pad{$_} == \$_[1]
+#     }
+# }
+# sub get_name_our {
+#     my $pad = peek_our($_[0] + 1);
+#     for (keys %$pad) {
+#         return $_ if $$pad{$_} == \$_[1]
+#     }
+# }
+# sub get_name_stash {
+#     my $caller = caller($_[0]) . '::';
+#     my $stash = do {
+#         no strict 'refs';
+#         \%$caller
+#     };
+#     my %lookup;
+#     for my $name (keys %$stash) {
+#         if (ref \$$stash{$name} eq 'GLOB') {
+#             for (['$' => 'SCALAR'],
+#                  ['@' => 'ARRAY'],
+#                  ['%' => 'HASH'],
+#                  ['&' => 'CODE']) {
+#                 if (my $ref = *{$$stash{$name}}{$$_[1]}) {
+#                     $lookup{$ref} ||= $$_[0] . $caller . $name
+#                 }
+#             }
+#         }
+#     }
+#     $lookup{\$_[1]}
+# }
+
+# sub get_name {
+#     unshift @_, @_ == 2 ? 1 + shift : 1;
+#     &get_name_my  or
+#     &get_name_our or
+#     &get_name_stash
+# }
+
+
+# method log ( $variable ) {
+# 	my $name = get_name(1, $variable) || 'name not found';
+	
+# 	return -1 if not $self->log() > 3 and not $self->printlog() > 3;
+
+# 	$name = '' if not defined $name;
+#     $self->appendLog($self->logfile()) if not defined $self->logfh();   
+
+# 	my $text = $variable;
+# 	if ( not defined $variable and @_ == 2 )	{
+# 		$text = "undef";
+# 	}
+# 	elsif ( ref($variable) )	{
+# 		$text = $self->objectToJson($variable);
+# 	}
+
+#   my ($package, $filename, $linenumber) = caller;
+#   my $timestamp = $self->logTimestamp();
+# 	my $callingsub = (caller 1)[3] || '';
+	
+# 	my $indent = $self->indent();
+# 	my $spacer = " " x $indent;
+# 	my $line = "$timestamp$spacer" . "[DEBUG]   \t$callingsub\t$linenumber\t$name\n";
+# 	$line = "$timestamp$spacer" . "[DEBUG]   \t$callingsub\t$linenumber\t$name: $text\n" if @_ == 2;
+
+#   print { $self->logfh() } $line if defined $self->logfh();
+#   print $line;
+# 	return $line;
+# }
+
 
 method setUserLogfile (  $username, $identifier, $mode ) {
 	return "/tmp/$username.$identifier.$mode.log";

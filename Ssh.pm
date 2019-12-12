@@ -77,7 +77,7 @@ method scpPut ($source, $target) {
 	return $self->scp($source, $target, "put");
 }
 
-method scpPut ($source, $target) {
+method scpGet ($source, $target) {
 #### EXECUTE SCP get COMMAND
 	return $self->scp($source, $target, "get");
 }
